@@ -1,0 +1,91 @@
+Feature: ajouter au panier
+  Scenario: ajouter le livre Python in easy steps by Mike McGrath
+  1840785969 The Fast Free Shipping au panier
+    Given I am on the homw page of ebay.com
+    When I select category "books"
+    And I enter "python in easy steps" in the search bar
+    And I submit the search
+    And I select the book "Python in easy steps by Mike McGrath 1840785969 The Fast Free Shipping"
+    And I switch the tab
+    And I add click on add to cart
+    Then the URL of the page should be "https://cart.payments.ebay.com/"
+    And the number of objects in the cart should be "1"
+    And the price on the page should be "US $9.37"
+
+
+package steps;
+
+import POM_EbayTest.*;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class TestEbayAjoutAuPanier {
+    public static PageObject page;
+    public static WebDriver driver;
+    PageAceuill pageAceuill;
+    PageResultats pageResultats;
+    PageConfirmation pageConfirmation;
+    PagePanier pagePanier;
+
+    @Given("I am on the homw page of ebay.com")
+    public void iAmOnTheHomwPageOfEbayCom() {
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\dell\\Downloads\\chromedriver_win32\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.get("https://www.ebay.com/");
+        page = new PageObject(driver);
+        pageAceuill = new PageAceuill(driver);
+    }
+
+    @When("I select category {string}")
+    public void iSelectCategory(String category) {
+        pageAceuill.selectCategory("267");
+    }
+
+    @And("I enter {string} in the search bar")
+    public void iEnterInTheSearchBar(String search) {
+        pageAceuill.enterSearch(search);
+    }
+
+    @And("I submit the search")
+    public void iSubmitTheSearch() {
+        pageAceuill.submitSearch();
+    }
+
+    @And("I select the book {string}")
+    public void iSelectTheBook(String bookName) {
+        pageResultats = new PageResultats(driver);
+        pageResultats.chooseBook(bookName);
+    }
+
+    @And("I switch the tab")
+    public void iSwitchTheTab() {
+        page.switchWindow(2);
+    }
+
+    @And("I add click on add to cart")
+    public void iAddClickOnAddToCart() {
+        pageConfirmation = new PageConfirmation(driver);
+        pageConfirmation.addToCart();
+    }
+
+    @Then("the URL of the page should be {string}")
+    public void theURLOfThePageShouldBe(String url) {
+        pagePanier =new PagePanier(driver);
+        pagePanier.confirmURL(url);
+    }
+
+    @And("the number of objects in the cart should be {string}")
+    public void theNumberOfObjectsInTheCartShouldBe(String number) {
+        pagePanier.checkNumber(number);
+
+    }
+
+    @And("the price on the page should be {string}")
+    public void thePriceOnThePageShouldBe(String price) {
+        pagePanier.checkPrice(price);
+    }
+}

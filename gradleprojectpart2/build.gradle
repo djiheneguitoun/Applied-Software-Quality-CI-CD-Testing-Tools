@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.example'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://mymavenrepo.com/repo/zvB3lm5ILMogY7Fh2T9B/'
+        credentials {
+            username 'myMavenRepo'
+            password 'test'
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:6.0.0'
+    testImplementation 'io.cucumber:cucumber-junit:6.0.0'
+    testImplementation 'junit:junit:4.12'
+    implementation "com.example:gradleproject:1.0"
+}
+
